@@ -185,7 +185,7 @@ test('each bingo landing page aims at its search and presets the generator', () 
     const html = byRoute[route];
     assert.ok(html, route);
     assert.match(html.match(/<title>([^<]*)<\/title>/)[1], query, route);
-    assert.match(html.match(/<h1[^>]*>([\s\S]*?)<\/h1>/)[1], query, route);
+    assert.match(html.match(/<h1[^>]*>([\s\S]*?)<\/h1>/)[1].replace(/<[^>]+>/g, ''), query, route);
     assert.match(html, new RegExp(`data-preset="${preset}"`), route);
     assert.match(html, /<h2[^>]*>Frequently asked questions<\/h2>/, route);
     assert.match(html, /src="\/assets\/bingo-core\.js"/, route);
@@ -221,4 +221,53 @@ test('contact: hello@funonpaper.com is on the contact and privacy pages as a mai
   const byRoute = Object.fromEntries(pages().map((p) => [p.route, p.html]));
   for (const route of ['/contact/', '/privacy/'])
     assert.match(byRoute[route], /<a href="mailto:hello@funonpaper\.com">hello@funonpaper\.com<\/a>/, route);
+});
+
+// ---- SITE-61 redesign: its own identity, nothing shared with the Swedish sites --------------------------
+
+test('fonts are self-hosted woff2 with their OFL licences, and no page loads Google Fonts', () => {
+  const css = fs.readFileSync(path.join(ROOT, 'site/assets/app.css'), 'utf8');
+  for (const f of ['fredoka-var.woff2', 'atkinson-hyperlegible-400.woff2', 'atkinson-hyperlegible-700.woff2']) {
+    assert.ok(fs.existsSync(path.join(ROOT, 'site/assets/fonts', f)), f);
+    assert.match(css, new RegExp(`url\\(/assets/fonts/${f.replace('.', '\\.')}\\)`), f);
+  }
+  for (const f of ['OFL-Fredoka.txt', 'OFL-AtkinsonHyperlegible.txt']) assert.ok(fs.existsSync(dist('assets/fonts', f)), f);
+  for (const { route, html } of pages()) assert.doesNotMatch(html, /fonts\.googleapis|fonts\.gstatic/, route);
+});
+
+test('header: the logo on the left and one "Make bingo cards" button, no nav list', () => {
+  for (const { route, html } of pages()) {
+    const head = html.match(/<header class="topbar[\s\S]*?<\/header>/);
+    assert.ok(head, route);
+    assert.match(head[0], /class="logo"[\s\S]*<svg/, route);
+    assert.strictEqual((head[0].match(/<a /g) || []).length, 2, `${route}: logo + one button`);
+    assert.match(head[0], /class="btn[^"]*"[^>]*>Make bingo cards</, route);
+    assert.doesNotMatch(head[0], /<nav/, route);
+  }
+});
+
+test('bingo pages: the generator and a live card preview are the hero, the printable pages a separate print area', () => {
+  for (const { route, html } of pages()) {
+    if (!/data-preset=/.test(html)) continue;
+    const maker = html.match(/<section class="maker[\s\S]*?<\/section>/)[0];
+    assert.match(maker, /<h1/, route);
+    assert.match(maker, /id="bingo-preview"/, route);
+    assert.match(maker, /id="bingo" data-preset=/, route);
+    assert.match(html, /<section class="print-area[^"]*"[\s\S]*?id="bingo-sheets"/, route);
+  }
+});
+
+test('home: a tile with a small card preview for each kind of bingo', () => {
+  const home = pages().find((p) => p.route === '/').html;
+  for (const [route, preset] of [['/printable-bingo-cards/', '75'], ['/90-ball-bingo-tickets/', '90'], ['/christmas-bingo-cards/', 'christmas'], ['/baby-shower-bingo-cards/', 'baby-shower'], ['/classroom-bingo-cards/', 'sight-words']])
+    assert.match(home, new RegExp(`<a class="tile[^"]*" href="${route}"[\\s\\S]*?data-mini="${preset}"`), route);
+  assert.match(home, /src="\/assets\/home\.js"/);
+});
+
+test('print stays plain black on white: the print rules reset the coloured header, free square and caller labels', () => {
+  const css = fs.readFileSync(path.join(ROOT, 'site/assets/bingo.css'), 'utf8');
+  const print = css.slice(css.indexOf('@media print'));
+  for (const sel of ['.cell.head', '.cell.free', '.caller-label']) assert.ok(print.includes(sel), sel);
+  assert.match(print, /color: #000/);
+  assert.doesNotMatch(css, /print-color-adjust: exact/);
 });
