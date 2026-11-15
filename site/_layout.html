@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en" prefix="og: https://ogp.me/ns#">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>$title</title>
+<meta name="description" content="$desc">
+<link rel="canonical" href="$canonical">
+<meta property="og:title" content="$title">
+<meta property="og:description" content="$desc">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="$sitename">
+<meta property="og:url" content="$canonical">
+<meta name="twitter:card" content="summary">
+<meta name="theme-color" content="#FFFDF8" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#16181D" media="(prefers-color-scheme: dark)">
+<link rel="stylesheet" href="/assets/app.css">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+$ads_head
+$head
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="site-head no-print">
+  <div class="wrap head-row">
+    <a class="brand" href="/"><span class="brand-mark" aria-hidden="true">✎</span> Fun on Paper</a>
+    <nav class="nav" aria-label="Main">
+      <a href="/printable-bingo-cards/">Bingo cards</a>
+      <a href="/about/">About</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+$body
+</main>
+
+<div class="wrap no-print"><div class="ad-slot">$ad</div></div>
+
+<footer class="site-foot no-print">
+  <div class="wrap">
+    <nav aria-label="Footer">
+      <a href="/">Home</a>
+      <a href="/printable-bingo-cards/">Printable bingo cards</a>
+      <a href="/about/">About</a>
+      <a href="/contact/">Contact</a>
+      <a href="/privacy/">Privacy</a>
+    </nav>
+    <p>Free printable games. Everything is made in your browser — nothing you type is sent anywhere.</p>
+  </div>
+</footer>
+</body>
+</html>
