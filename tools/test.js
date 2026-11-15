@@ -216,3 +216,9 @@ test('print: the stylesheet sets A4 and US Letter page sizes and hides everythin
   assert.match(js, /size: A4/);
   assert.match(js, /size: letter/);
 });
+
+test('contact: hello@funonpaper.com is on the contact and privacy pages as a mailto link', () => {
+  const byRoute = Object.fromEntries(pages().map((p) => [p.route, p.html]));
+  for (const route of ['/contact/', '/privacy/'])
+    assert.match(byRoute[route], /<a href="mailto:hello@funonpaper\.com">hello@funonpaper\.com<\/a>/, route);
+});
