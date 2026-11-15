@@ -12,8 +12,10 @@
 <meta property="og:site_name" content="$sitename">
 <meta property="og:url" content="$canonical">
 <meta name="twitter:card" content="summary">
-<meta name="theme-color" content="#FFFDF8" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#16181D" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#FFFDF7">
+<!-- Only the heading face is preloaded: the h1 is the LCP element. Body text
+     paints in the fallback first (font-display: swap). -->
+<link rel="preload" href="/assets/fonts/fredoka-var.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/assets/app.css">
 <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
 $ads_head
@@ -22,13 +24,13 @@ $head
 <body>
 <a class="skip" href="#main">Skip to content</a>
 
-<header class="site-head no-print">
-  <div class="wrap head-row">
-    <a class="brand" href="/"><span class="brand-mark" aria-hidden="true">✎</span> Fun on Paper</a>
-    <nav class="nav" aria-label="Main">
-      <a href="/printable-bingo-cards/">Bingo cards</a>
-      <a href="/about/">About</a>
-    </nav>
+<header class="topbar no-print">
+  <div class="wrap topbar-row">
+    <a class="logo" href="/" aria-label="Fun on Paper, home">
+      <svg class="logo-mark" viewBox="0 0 40 40" aria-hidden="true" focusable="false"><g transform="rotate(-8 20 20)" stroke="#1B1B1F" stroke-width="3" stroke-linejoin="round"><path d="M8 5h17l8 8v22H8z" fill="#FFFFFF"/><path d="M25 5v8h8z" fill="#FFD23F"/></g><g transform="rotate(-8 20 20)"><circle cx="15" cy="19" r="2.4" fill="#F2604B"/><circle cx="22.5" cy="19" r="2.4" fill="#3FA7F5"/><circle cx="15" cy="27" r="2.4" fill="#2BB57E"/><circle cx="22.5" cy="27" r="2.4" fill="#1B1B1F"/></g></svg>
+      <span class="logo-word">Fun on <span class="logo-paper">Paper</span></span>
+    </a>
+    <a class="btn btn-sun" href="/printable-bingo-cards/">Make bingo cards</a>
   </div>
 </header>
 
@@ -38,16 +40,33 @@ $body
 
 <div class="wrap no-print"><div class="ad-slot">$ad</div></div>
 
-<footer class="site-foot no-print">
-  <div class="wrap">
-    <nav aria-label="Footer">
-      <a href="/">Home</a>
-      <a href="/printable-bingo-cards/">Printable bingo cards</a>
-      <a href="/about/">About</a>
-      <a href="/contact/">Contact</a>
-      <a href="/privacy/">Privacy</a>
-    </nav>
-    <p>Free printable games. Everything is made in your browser — nothing you type is sent anywhere.</p>
+<footer class="bottom no-print">
+  <div class="wrap bottom-grid">
+    <div class="bottom-about">
+      <p class="bottom-logo">Fun on Paper</p>
+      <p>Free printable games you set up here and play at the table. Everything is made in your
+      browser — nothing you type is sent anywhere.</p>
+      <p><a href="mailto:hello@funonpaper.com">hello@funonpaper.com</a></p>
+    </div>
+    <div>
+      <p class="bottom-head">Bingo cards</p>
+      <ul class="bottom-list">
+        <li><a href="/printable-bingo-cards/">1–75 number cards</a></li>
+        <li><a href="/90-ball-bingo-tickets/">90-ball tickets</a></li>
+        <li><a href="/christmas-bingo-cards/">Christmas</a></li>
+        <li><a href="/baby-shower-bingo-cards/">Baby shower</a></li>
+        <li><a href="/classroom-bingo-cards/">Classroom sight words</a></li>
+      </ul>
+    </div>
+    <div>
+      <p class="bottom-head">The site</p>
+      <ul class="bottom-list">
+        <li><a href="/">Home</a></li>
+        <li><a href="/about/">About</a></li>
+        <li><a href="/contact/">Contact</a></li>
+        <li><a href="/privacy/">Privacy</a></li>
+      </ul>
+    </div>
   </div>
 </footer>
 </body>

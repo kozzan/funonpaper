@@ -1,29 +1,64 @@
 <!--meta
 title: Fun on Paper – free printable bingo cards and paper games
 desc: Free printable games you make in your browser and play on paper. Start with bingo: number cards, 90-ball tickets and themed word cards with a caller sheet.
+head: <link rel="stylesheet" href="/assets/bingo.css">
 priority: 1.0
 -->
-<section class="wrap hero">
-  <p class="kicker">Free printables</p>
-  <h1>Games you make here and play on paper</h1>
-  <p class="lead">Set up a game in your browser, print it or save it as a PDF, and play it at the
-  table. No sign-up, nothing to install, and nothing you type leaves your device.</p>
-  <p><a class="btn btn-primary" href="/printable-bingo-cards/">Make bingo cards</a></p>
+<section class="home-hero">
+  <span class="sticker">Free · no sign-up · prints in seconds</span>
+  <h1>Bingo cards you make here and play <span class="scribble">on paper</span></h1>
+  <p class="lead">Pick a theme, change the words if you like, and print. Every card is different, a
+  caller sheet comes with the set, and US Letter and A4 both work.</p>
+  <a class="btn btn-sun" href="/printable-bingo-cards/">Make bingo cards</a>
 </section>
 
-<section class="wrap">
-  <h2>Bingo cards</h2>
-  <p class="prose">Every card is different, every set comes with a caller sheet, and each set has a
-  code so you can print the same cards again later. US Letter and A4.</p>
+<section class="wrap" aria-labelledby="themes">
+  <h2 class="visually-hidden" id="themes">Pick a bingo card</h2>
   <ul class="tiles">
-    <li><a class="tile" href="/printable-bingo-cards/"><b>Printable bingo cards</b><span>1–75 number cards with a free centre.</span></a></li>
-    <li><a class="tile" href="/90-ball-bingo-tickets/"><b>90-ball bingo tickets</b><span>UK-style tickets, 15 numbers in 3 rows.</span></a></li>
-    <li><a class="tile" href="/christmas-bingo-cards/"><b>Christmas bingo cards</b><span>Santa, sleighs and snowmen, ready to print.</span></a></li>
-    <li><a class="tile" href="/baby-shower-bingo-cards/"><b>Baby shower bingo cards</b><span>Gift bingo for opening the presents.</span></a></li>
-    <li><a class="tile" href="/classroom-bingo-cards/"><b>Sight word bingo cards</b><span>Dolch sight words or your own vocabulary.</span></a></li>
+    <li>
+      <a class="tile tile-tomato" href="/printable-bingo-cards/">
+        <div class="mini" data-mini="75" aria-hidden="true"></div>
+        <div><b>1–75 number bingo</b><span>Classic American cards: B-I-N-G-O, numbers 1 to 75, free centre.</span><span class="go">Make them →</span></div>
+      </a>
+    </li>
+    <li>
+      <a class="tile tile-sun" href="/christmas-bingo-cards/">
+        <div class="mini" data-mini="christmas" aria-hidden="true"></div>
+        <div><b>Christmas bingo</b><span>Santa, sleighs and snowmen. Edit the words to fit your table.</span><span class="go">Make them →</span></div>
+      </a>
+    </li>
+    <li>
+      <a class="tile tile-sky" href="/classroom-bingo-cards/">
+        <div class="mini" data-mini="sight-words" aria-hidden="true"></div>
+        <div><b>Classroom sight words</b><span>Dolch lists or this week’s vocabulary, a different card for every student.</span><span class="go">Make them →</span></div>
+      </a>
+    </li>
+    <li>
+      <a class="tile tile-mint" href="/baby-shower-bingo-cards/">
+        <div class="mini" data-mini="baby-shower" aria-hidden="true"></div>
+        <div><b>Baby shower bingo</b><span>Gift bingo to play while the presents are opened.</span><span class="go">Make them →</span></div>
+      </a>
+    </li>
+    <li>
+      <a class="tile tile-lilac" href="/90-ball-bingo-tickets/">
+        <div class="mini" data-mini="90" aria-hidden="true"></div>
+        <div><b>90-ball tickets</b><span>The UK game: 15 numbers in 3 rows, one line, two lines, full house.</span><span class="go">Make them →</span></div>
+      </a>
+    </li>
   </ul>
+
+  <div class="note-box">
+    <h2>How it works</h2>
+    <p>Everything happens in your browser. Press <b>Print or save as PDF</b> and your browser lays out
+    the pages; choose <b>Save as PDF</b> as the printer to get a file. Each set has a short code, so
+    typing it in again later prints exactly the same cards.</p>
+  </div>
 </section>
 
+<script src="/assets/bingo-core.js"></script>
+<script src="/assets/bingo-presets.js"></script>
+<script src="/assets/bingo-render.js"></script>
+<script src="/assets/home.js"></script>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",

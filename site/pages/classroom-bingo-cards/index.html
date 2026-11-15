@@ -4,15 +4,21 @@ desc: Free printable sight word bingo cards with the Dolch pre-primer and primer
 head: <link rel="stylesheet" href="/assets/bingo.css">
 priority: 0.9
 -->
-<section class="wrap hero">
-  <h1>Sight word bingo cards for the classroom</h1>
-  <p class="lead">Practise sight words or new vocabulary with a different bingo card for every student. Start from the Dolch lists or paste in this week’s words.</p>
-</section>
-
-<section class="wrap tool">
-  <div id="bingo" data-preset="sight-words">
+<section class="maker wrap">
+  <div class="maker-head">
+    <h1>Sight word bingo cards for the <span class="scribble">classroom</span></h1>
+    <p class="lead">Practise sight words or new vocabulary with a different bingo card for every student. Start from the Dolch lists or paste in this week’s words.</p>
+  </div>
+  <div class="maker-preview" aria-hidden="true"><div class="pinned" id="bingo-preview"></div></div>
+  <div class="maker-form" id="bingo" data-preset="sight-words">
     <noscript><p class="error">The card maker needs JavaScript. Turn it on, or open this page in another browser.</p></noscript>
   </div>
+</section>
+
+<section class="print-area wrap" aria-labelledby="pages-title">
+  <h2 class="pages-title" id="pages-title">Your pages</h2>
+  <p class="hint">This is what will print, page by page.</p>
+  <div id="bingo-sheets" class="sheets"></div>
 </section>
 
 <section class="wrap">
@@ -67,6 +73,7 @@ priority: 0.9
 
 <script src="/assets/bingo-core.js"></script>
 <script src="/assets/bingo-presets.js"></script>
+<script src="/assets/bingo-render.js"></script>
 <script src="/assets/bingo.js"></script>
 <script type="application/ld+json">
 {

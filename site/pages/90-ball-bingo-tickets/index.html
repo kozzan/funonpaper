@@ -4,15 +4,21 @@ desc: Print free 90-ball bingo tickets: 3 rows of 9 columns, 15 numbers each, th
 head: <link rel="stylesheet" href="/assets/bingo.css">
 priority: 0.9
 -->
-<section class="wrap hero">
-  <h1>90-ball bingo tickets</h1>
-  <p class="lead">Make printable 90-ball bingo tickets, the game played in UK bingo halls: 15 numbers on each ticket, three ways to win.</p>
-</section>
-
-<section class="wrap tool">
-  <div id="bingo" data-preset="90">
+<section class="maker wrap">
+  <div class="maker-head">
+    <h1>90-ball bingo <span class="scribble">tickets</span></h1>
+    <p class="lead">Make printable 90-ball bingo tickets, the game played in UK bingo halls: 15 numbers on each ticket, three ways to win.</p>
+  </div>
+  <div class="maker-preview" aria-hidden="true"><div class="pinned" id="bingo-preview"></div></div>
+  <div class="maker-form" id="bingo" data-preset="90">
     <noscript><p class="error">The card maker needs JavaScript. Turn it on, or open this page in another browser.</p></noscript>
   </div>
+</section>
+
+<section class="print-area wrap" aria-labelledby="pages-title">
+  <h2 class="pages-title" id="pages-title">Your pages</h2>
+  <p class="hint">This is what will print, page by page.</p>
+  <div id="bingo-sheets" class="sheets"></div>
 </section>
 
 <section class="wrap">
@@ -71,6 +77,7 @@ priority: 0.9
 
 <script src="/assets/bingo-core.js"></script>
 <script src="/assets/bingo-presets.js"></script>
+<script src="/assets/bingo-render.js"></script>
 <script src="/assets/bingo.js"></script>
 <script type="application/ld+json">
 {

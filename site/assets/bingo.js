@@ -1,12 +1,15 @@
 /* Bingo generator UI. The rules live in bingo-core.js; this file only reads
    the form, draws the sheets and prints. Everything stays in the browser.
 
-   <div id="bingo" data-preset="75|90|christmas|baby-shower|sight-words|..."></div> */
+   <div id="bingo" data-preset="75|90|christmas|baby-shower|sight-words|..."></div>
+   plus, when the page has them, #bingo-preview (the hero's live copy of card 1)
+   and #bingo-sheets (the printable pages; the print CSS shows only those). */
 (function () {
   'use strict';
   var root = document.getElementById('bingo');
-  if (!root || !window.Bingo) return;
+  if (!root || !window.Bingo || !window.BingoRender) return;
   var B = window.Bingo;
+  var R = window.BingoRender;
   var P = window.BingoPresets || {};
 
   // Printable area inside a 10 mm margin.
@@ -66,12 +69,13 @@
     '    <span class="hint" id="bg-summary"></span>',
     '  </div>',
     '  <p class="hint">To get a PDF, choose <b>Save as PDF</b> as the printer in the print window.</p>',
-    '</form>',
-    '<div class="sheets" aria-label="Preview of the printed pages"></div>'
+    '</form>'
   ].join('\n');
 
   var form = root.querySelector('form');
-  var sheets = root.querySelector('.sheets');
+  var sheets = document.getElementById('bingo-sheets');
+  if (!sheets) { sheets = document.createElement('div'); sheets.className = 'sheets'; root.appendChild(sheets); }
+  var preview = document.getElementById('bingo-preview');
   var errorBox = root.querySelector('.error');
   var printBtn = root.querySelector('[data-print]');
   var pageStyle = document.createElement('style');
@@ -108,48 +112,7 @@
     form.per.value = opts.indexOf(+cur) >= 0 ? String(cur) : String(opts[k === '90' ? 2 : 1]);
   }
 
-  function el(tag, cls, text) {
-    var e = document.createElement(tag);
-    if (cls) e.className = cls;
-    if (text !== undefined) e.textContent = text;
-    return e;
-  }
-
-  /* A square is a fifth of the card wide. Size each entry so its longest
-     word fits on one line (about 0.62 em per bold character) and the whole
-     entry fits in three lines, rather than breaking a word in the middle. */
-  function wordSize(w) {
-    var parts = String(w).split(/\s+/);
-    var longest = parts.reduce(function (m, s) { return Math.max(m, s.length); }, 1);
-    var byWord = 16 / (0.62 * longest);
-    var byLines = 16 * 3 / (0.62 * String(w).length);
-    return Math.max(1.6, Math.min(4.4, byWord, byLines)).toFixed(2) + 'cqw';
-  }
-
-  function drawCard(card, title, code, number) {
-    var c = el('div', 'card card-' + (card.kind === '90' ? '90' : '5'));
-    if (title) c.appendChild(el('div', 'card-title', title));
-    var g = el('div', 'card-grid');
-    if (card.kind === '75') B.LETTERS.forEach(function (l) { g.appendChild(el('div', 'cell head', l)); });
-    card.grid.forEach(function (row) {
-      row.forEach(function (v) {
-        if (v === null && card.kind !== '90') {
-          var f = el('div', 'cell free');
-          f.appendChild(el('span', 'star', '★'));
-          f.appendChild(el('span', '', 'FREE'));
-          g.appendChild(f);
-        } else if (v === null) g.appendChild(el('div', 'cell blank'));
-        else {
-          var cell = el('div', 'cell ' + (card.kind === 'words' ? 'word' : 'num'), String(v));
-          if (card.kind === 'words') cell.style.fontSize = wordSize(v);
-          g.appendChild(cell);
-        }
-      });
-    });
-    c.appendChild(g);
-    c.appendChild(el('div', 'card-foot', 'Card ' + number + ' · set ' + code));
-    return c;
-  }
+  var el = R.el;
 
   function drawCaller(k, words, title, code) {
     var s = el('section', 'sheet caller');
@@ -181,11 +144,12 @@
   function render() {
     var k = kind();
     root.setAttribute('data-kind', k);
+    if (preview) preview.setAttribute('data-kind', k);
     var pp = PAPER[paper()];
     pageStyle.textContent = '@page { ' + pp.css + ' }';
-    root.style.setProperty('--sheet-w', pp.w + 'mm');
-    root.style.setProperty('--sheet-h', pp.h + 'mm');
-    root.style.setProperty('--sheet-ratio', pp.w + ' / ' + pp.h);
+    document.documentElement.style.setProperty('--sheet-w', pp.w + 'mm');
+    document.documentElement.style.setProperty('--sheet-h', pp.h + 'mm');
+    document.documentElement.style.setProperty('--sheet-ratio', pp.w + ' / ' + pp.h);
 
     var n = Math.max(1, Math.min(MAX_CARDS, Math.floor(+form.n.value) || 1));
     var per = +form.per.value;
@@ -201,14 +165,19 @@
       cards.push(card);
     }
     sheets.innerHTML = '';
-    if (!cards) return;
+    if (preview) preview.innerHTML = '';
+    if (!cards) {
+      if (preview) preview.appendChild(el('p', 'preview-wait', 'Add more words to see your card.'));
+      return;
+    }
     showError('');
+    if (preview) preview.appendChild(R.card(cards[0], title, code, 1));
 
     for (var start = 0; start < cards.length; start += per) {
       var s = el('section', 'sheet per-' + per + (k === '90' ? ' sheet-90' : ' sheet-grid'));
       for (var j = start; j < Math.min(start + per, cards.length); j++) {
         var slot = el('div', 'slot');
-        slot.appendChild(drawCard(cards[j], title, code, j + 1));
+        slot.appendChild(R.card(cards[j], title, code, j + 1));
         s.appendChild(slot);
       }
       sheets.appendChild(s);
